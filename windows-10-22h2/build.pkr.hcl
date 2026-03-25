@@ -8,7 +8,7 @@ packer {
 }
 
 locals {
-  vm_name = "windows-10-22h2-${lower(var.build_sku)}"
+  vm_name = "windows-10-22h2-${lower(var.build_edition)}"
   first_logon_commands = {
     for platform, cmds in var.build_first_logon_commands_platform : platform =>
     concat(cmds, var.build_first_logon_commands_shared)
@@ -25,10 +25,10 @@ source "proxmox-iso" "windows-10-22h2" {
 
   # Proxmox
   vm_name              = local.vm_name
-  vm_id                = var.sku_build_map[var.build_sku].vm_id
+  vm_id                = var.edition_build_map[var.build_edition].vm_id
   template_name        = local.vm_name
-  tags                 = "Windows;Windows-10;Windows-10-${var.build_sku};Windows-10-22H2;Windows-10-22H2-${var.build_sku}"
-  template_description = "Windows 10 22H2 ${var.build_sku}, Built ${timestamp()}"
+  tags                 = "Windows;Windows-10;Windows-10-${var.build_edition};Windows-10-22H2;Windows-10-22H2-${var.build_edition}"
+  template_description = "Windows 10 22H2 ${var.build_edition}, Built ${timestamp()}"
 
   # Host
   os              = "win10"
@@ -61,8 +61,8 @@ source "proxmox-iso" "windows-10-22h2" {
   boot_iso {
     type         = "sata"
     index        = 0
-    iso_file     = "${var.proxmox_iso_storage_pool}:iso/${var.sku_build_map[var.build_sku].iso_file}"
-    iso_checksum = var.sku_build_map[var.build_sku].iso_checksum
+    iso_file     = "${var.proxmox_iso_storage_pool}:iso/${var.edition_build_map[var.build_edition].iso_file}"
+    iso_checksum = var.edition_build_map[var.build_edition].iso_checksum
     unmount      = true
   }
 
@@ -76,10 +76,10 @@ source "proxmox-iso" "windows-10-22h2" {
       "Autounattend.xml" = templatefile(
         "${path.root}/Autounattend.xml.tmpl",
         {
-          sku                  = var.build_sku
+          edition                  = var.build_edition
           build_locale         = var.build_locale
-          image_name           = var.sku_build_map[var.build_sku].image_name
-          product_key          = var.sku_build_map[var.build_sku].product_key
+          image_name           = var.edition_build_map[var.build_edition].image_name
+          product_key          = var.edition_build_map[var.build_edition].product_key
           organization         = var.build_organization
           timezone             = var.build_timezone
           protect_your_pc      = var.build_protect_your_pc

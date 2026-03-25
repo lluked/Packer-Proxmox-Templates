@@ -38,7 +38,7 @@
             </SetupUILanguage>
             <InputLocale>${ build_locale }</InputLocale>
             <SystemLocale>${ build_locale }</SystemLocale>
-            <UILanguage>${ lower(build_locale) == "en-gb" && lower(sku) == "enterprise" ? "en-US" : build_locale }</UILanguage>
+            <UILanguage>${ lower(build_locale) == "en-gb" && lower(edition) == "enterprise" ? "en-US" : build_locale }</UILanguage>
             <UserLocale>${ build_locale }</UserLocale>
         </component>
         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -69,7 +69,7 @@
             <UserData>
                 <AcceptEula>true</AcceptEula>
                 <Organization>${ organization }</Organization>
-                %{~ if lower(sku) == "enterprise" ~}
+                %{~ if lower(edition) == "enterprise" ~}
                 <ProductKey>${ product_key }
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
@@ -100,28 +100,16 @@
     </settings>
     <settings pass="specialize">
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <ComputerName>WIN10-22H2-${upper(substr(sku, 0, 3))}</ComputerName>
+            <ComputerName>WIN10-22H2-${upper(substr(edition, 0, 3))}</ComputerName>
             <TimeZone>${ timezone }</TimeZone>
         </component>
-        <component name="Microsoft-Windows-TerminalServices-LocalSessionManager" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <fDenyTSConnections>false</fDenyTSConnections>
-        </component>
-        <component name="Networking-MPSSVC-Svc" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <FirewallGroups>
-                <FirewallGroup wcm:action="add" wcm:keyValue="RemoteDesktop">
-                    <Active>true</Active>
-                    <Group>Remote Desktop</Group>
-                    <Profile>all</Profile>
-                </FirewallGroup>
-            </FirewallGroups>
-        </component>
-        <component name="Microsoft-Windows-TerminalServices-RDP-WinStationExtensions" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <UserAuthentication>0</UserAuthentication>
+        <component name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SkipAutoActivation>true</SkipAutoActivation>
         </component>
         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>${ build_locale }</InputLocale>
             <SystemLocale>${ build_locale }</SystemLocale>
-            <UILanguage>${ lower(build_locale) == "en-gb" && lower(sku) == "enterprise" ? "en-US" : build_locale }</UILanguage>
+            <UILanguage>${ lower(build_locale) == "en-gb" && lower(edition) == "enterprise" ? "en-US" : build_locale }</UILanguage>
             <UserLocale>${ build_locale }</UserLocale>
         </component>
     </settings>
@@ -171,9 +159,8 @@
         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>${ build_locale }</InputLocale>
             <SystemLocale>${ build_locale }</SystemLocale>
-            <UILanguage>${ lower(build_locale) == "en-gb" && lower(sku) == "enterprise" ? "en-US" : build_locale }</UILanguage>
+            <UILanguage>${ lower(build_locale) == "en-gb" && lower(edition) == "enterprise" ? "en-US" : build_locale }</UILanguage>
             <UserLocale>${ build_locale }</UserLocale>
         </component>
     </settings>
-    <cpi:offlineImage xmlns:cpi="urn:schemas-microsoft-com:cpi" cpi:source="catalog:d:/sources/install_windows 10 ENTERPRISE.clg"/>
 </unattend>

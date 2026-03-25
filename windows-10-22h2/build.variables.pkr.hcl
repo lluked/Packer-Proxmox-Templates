@@ -1,5 +1,5 @@
 
-variable "sku_build_map" {
+variable "edition_build_map" {
   type = map(object({
     iso_file     = string
     iso_checksum = string
@@ -26,11 +26,11 @@ variable "sku_build_map" {
   }
 }
 
-variable "build_sku" {
+variable "build_edition" {
   type    = string
   default = "Enterprise"
   validation {
-    condition     = contains(["Enterprise", "Pro"], var.build_sku)
+    condition     = contains(["Enterprise", "Pro"], var.build_edition)
     error_message = "Must be either 'Enterprise' or 'Pro'."
   }
 }
