@@ -26,6 +26,18 @@ variable "edition_build_map" {
   }
 }
 
+variable "virtio_drivers_iso" {
+  type = object({
+    file     = string
+    checksum = string
+  })
+
+  default = {
+    file     = "virtio-win-0.1.285-1.iso"
+    checksum = "sha256:E14CF2B94492C3E925F0070BA7FDFEDEB2048C91EEA9C5A5AFB30232A3976331"
+  }
+}
+
 variable "build_edition" {
   type    = string
   default = "Enterprise"

@@ -6,14 +6,28 @@ variable iso_map {
   }))
 
   default = {
-    Datacenter = {
+    # https://www.microsoft.com/en-gb/evalcenter/download-windows-server-2016
+    Server = {
       iso_url      = "https://software-static.download.prss.microsoft.com/pr/download/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
       iso_checksum = "sha256:1CE702A578A3CB1AC3D14873980838590F06D5B7101C5DAACCBAC9D73F1FB50F"
     }
-    Essentials = {
+    # https://www.microsoft.com/en-gb/evalcenter/download-windows-server-2016-essentials
+    Server-Essentials = {
       iso_url      = "https://download.microsoft.com/download/6/9/5/6957BB28-1FAD-4E62-B161-F873196130BD/14393.0.161119-1705.RS1_REFRESH_SERVERESSENTIALS_OEM_X64FRE_EN-US.ISO"
       iso_checksum = "sha256:968222F3EF41F7390BC2825A721C97C653B627023EBD051EC1CEBCE1F9B2D250"
     }
+  }
+}
+
+variable "virtio_drivers_iso" {
+  type = object({
+    file     = string
+    checksum = string
+  })
+
+  default = {
+    file     = "virtio-win-0.1.285-1.iso"
+    checksum = "sha256:E14CF2B94492C3E925F0070BA7FDFEDEB2048C91EEA9C5A5AFB30232A3976331"
   }
 }
 
@@ -27,31 +41,31 @@ variable "edition_build_map" {
 
   default = {
     Standard-Core = {
-      iso          = "Datacenter"
+      iso          = "Server"
       image_index  = 1
       product_key  = "WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1161"
     }
     Standard = {
-      iso          = "Datacenter"
+      iso          = "Server"
       image_index  = 2
       product_key  = "WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1162"
     }
     Datacenter-Core = {
-      iso          = "Datacenter"
+      iso          = "Server"
       image_index  = 3
       product_key  = "CB7KF-BWN84-R7R2Y-793K2-8XDDG" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1163"
     }
     Datacenter = {
-      iso          = "Datacenter"
+      iso          = "Server"
       image_index  = 4
       product_key  = "CB7KF-BWN84-R7R2Y-793K2-8XDDG" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1164"
     }
     Essentials = {
-      iso          = "Essentials"
+      iso          = "Server-Essentials"
       image_index  = 1
       product_key  = "JCKRF-N37P4-C2D82-9YXRT-4M63B" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1165"
@@ -61,7 +75,7 @@ variable "edition_build_map" {
 
 variable "build_edition" {
   type    = string
-  default = "Standard-Core"
+  default = "Standard"
   validation {
     condition     = contains(["Standard-Core", "Standard", "Datacenter-Core", "Datacenter", "Essentials"], var.build_edition)
     error_message = "Must be either 'Standard-Core', 'Standard', 'Datacenter-Core', 'Datacenter', or 'Essentials'."

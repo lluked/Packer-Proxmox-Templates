@@ -8,27 +8,27 @@
             <DriverPaths>
                 <!-- VirtIO SCSI Storage Driver (scsi) -->
                 <PathAndCredentials wcm:action="add" wcm:keyValue="1">
-                    <Path>F:\vioscsi\w10\amd64</Path>
+                    <Path>F:\vioscsi\2k16\amd64</Path>
                 </PathAndCredentials>
                 <!-- VirtIO Block Storage Driver (virtio) -->
                 <PathAndCredentials wcm:action="add" wcm:keyValue="2">
-                    <Path>F:\viostor\w10\amd64</Path>
+                    <Path>F:\viostor\2k16\amd64</Path>
                 </PathAndCredentials>
                 <!-- VirtIO Network Driver - paravirtualized networking -->
                 <PathAndCredentials wcm:action="add" wcm:keyValue="3">
-                    <Path>F:\NetKVM\w10\amd64</Path>
+                    <Path>F:\NetKVM\2k16\amd64</Path>
                 </PathAndCredentials>
                 <!-- VirtIO GPU Driver - paravirtualized graphics -->
                 <PathAndCredentials wcm:action="add" wcm:keyValue="4">
-                    <Path>F:\viogpu\w10\amd64</Path>
+                    <Path>F:\viogpu\2k16\amd64</Path>
                 </PathAndCredentials>
                 <!-- VirtIO Serial Driver - paravirtualized serial communication -->
                 <PathAndCredentials wcm:action="add" wcm:keyValue="6">
-                    <Path>F:\vioserial\w10\amd64</Path>
+                    <Path>F:\vioserial\2k16\amd64</Path>
                 </PathAndCredentials>
                 <!-- Virtual RNG Driver - improves entropy for crypto/security -->
                 <PathAndCredentials wcm:action="add" wcm:keyValue="7">
-                    <Path>F:\viorng\w10\amd64</Path>
+                    <Path>F:\viorng\2k16\amd64</Path>
                 </PathAndCredentials>
             </DriverPaths>
         </component>
@@ -44,36 +44,42 @@
         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DiskConfiguration>
                 <Disk wcm:action="add">
+                    <DiskID>0</DiskID>
+                    <WillWipeDisk>true</WillWipeDisk>
+                    <!-- Create partitions -->
                     <CreatePartitions>
+                        <!-- System Reserved -->
                         <CreatePartition wcm:action="add">
-                            <Type>Primary</Type>
                             <Order>1</Order>
-                            <Size>350</Size>
+                            <Type>Primary</Type>
+                            <Size>500</Size>
                         </CreatePartition>
+                        <!-- OS Partition -->
                         <CreatePartition wcm:action="add">
                             <Order>2</Order>
                             <Type>Primary</Type>
                             <Extend>true</Extend>
                         </CreatePartition>
                     </CreatePartitions>
+                    <!-- Format partitions -->
                     <ModifyPartitions>
+                        <!-- System Reserved -->
                         <ModifyPartition wcm:action="add">
-                            <Active>true</Active>
-                            <Format>NTFS</Format>
-                            <Label>boot</Label>
                             <Order>1</Order>
                             <PartitionID>1</PartitionID>
-                        </ModifyPartition>
-                        <ModifyPartition wcm:action="add">
                             <Format>NTFS</Format>
-                            <Label>System</Label>
-                            <Letter>C</Letter>
+                            <Label>System Reserved</Label>
+                            <Active>true</Active>
+                        </ModifyPartition>
+                        <!-- Local Disk (C:) -->
+                        <ModifyPartition wcm:action="add">
                             <Order>2</Order>
                             <PartitionID>2</PartitionID>
+                            <Format>NTFS</Format>
+                            <Label>Local Disk</Label>
+                            <Letter>C</Letter>
                         </ModifyPartition>
                     </ModifyPartitions>
-                    <DiskID>0</DiskID>
-                    <WillWipeDisk>true</WillWipeDisk>
                 </Disk>
             </DiskConfiguration>
             <UserData>
