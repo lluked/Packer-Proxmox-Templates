@@ -85,7 +85,10 @@
             <UserData>
                 <AcceptEula>true</AcceptEula>
                 <Organization>${ organization }</Organization>
-                <ProductKey>${ product_key }
+                <ProductKey>
+                    %{~ if product_key != "" ~}
+                    <Key>${ product_key }</Key>
+                    %{~ endif ~}
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
             </UserData>

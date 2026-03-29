@@ -85,16 +85,12 @@
             <UserData>
                 <AcceptEula>true</AcceptEula>
                 <Organization>${ organization }</Organization>
-                %{~ if lower(edition) == "essentials" ~}
                 <ProductKey>
+                    %{~ if product_key != "" ~}
                     <Key>${ product_key }</Key>
+                    %{~ endif ~}
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
-                %{~ else ~}
-                <ProductKey>${ product_key }
-                    <WillShowUI>Never</WillShowUI>
-                </ProductKey>
-                %{~ endif ~}
             </UserData>
             <ImageInstall>
                 <OSImage>

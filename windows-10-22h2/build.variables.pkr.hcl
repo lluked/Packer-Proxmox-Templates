@@ -20,7 +20,7 @@ variable "edition_build_map" {
       iso_file     = "19045.2006.220908-0225.22h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
       iso_checksum = "sha256:EF7312733A9F5D7D51CFA04AC497671995674CA5E1058D5164D6028F0938D668"
       image_name   = "Windows 10 Enterprise Evaluation"
-      product_key  = "NPPR9-FWDCX-D2C8J-H872K-2YT43" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "" # Does not need a product key as it is built into the Eval ISO.
       vm_id        = "1102"
     }
   }

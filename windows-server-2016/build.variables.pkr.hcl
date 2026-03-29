@@ -43,25 +43,25 @@ variable "edition_build_map" {
     Standard-Core = {
       iso          = "Server"
       image_index  = 1
-      product_key  = "WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "" # Does not need a product key as it is built into the Eval ISO.
       vm_id        = "1161"
     }
     Standard = {
       iso          = "Server"
       image_index  = 2
-      product_key  = "WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "" # Does not need a product key as it is built into the Eval ISO.
       vm_id        = "1162"
     }
     Datacenter-Core = {
       iso          = "Server"
       image_index  = 3
-      product_key  = "CB7KF-BWN84-R7R2Y-793K2-8XDDG" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "" # Does not need a product key as it is built into the Eval ISO.
       vm_id        = "1163"
     }
     Datacenter = {
       iso          = "Server"
       image_index  = 4
-      product_key  = "CB7KF-BWN84-R7R2Y-793K2-8XDDG" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "" # Does not need a product key as it is built into the Eval ISO.
       vm_id        = "1164"
     }
     Essentials = {
