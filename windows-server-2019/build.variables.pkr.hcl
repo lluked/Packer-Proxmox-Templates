@@ -35,6 +35,7 @@ variable "edition_build_map" {
   type = map(object({
     iso          = string
     image_index  = number
+    product_key  = string
     vm_id        = string
   }))
 
