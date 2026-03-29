@@ -100,8 +100,8 @@ source "proxmox-iso" "windows-server-2025" {
   additional_iso_files {
     type         = "sata"
     index        = 2
-    iso_file     = "${var.proxmox_iso_storage_pool}:iso/virtio-win-0.1.285-1.iso"
-    iso_checksum = "sha256:c88a0dde34605eaee6cf889f3e2a0c2af3caeb91b5df45a125ca4f701acbbbe0"
+    iso_file     = "${var.proxmox_iso_storage_pool}:iso/${var.virtio_drivers_iso.file}"
+    iso_checksum = "${var.virtio_drivers_iso.checksum}"
     unmount      = true
   }
 
