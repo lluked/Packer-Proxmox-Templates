@@ -1,17 +1,34 @@
 
-variable "iso_url" {
-  type        = string
-  description =  "https://www.microsoft.com/en-gb/evalcenter/download-windows-server-2022"
-  default     = "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso"
+variable iso_map {
+  type = map(object({
+    iso_url      = string
+    iso_checksum = string
+  }))
+
+  default = {
+    # https://www.microsoft.com/en-gb/evalcenter/download-windows-server-2022
+    Server = {
+      iso_url      = "https://software-static.download.prss.microsoft.com/sg/download/888969d5-f34g-4e03-ac9d-1f9786c66749/SERVER_EVAL_x64FRE_en-us.iso"
+      iso_checksum = "sha256:3E4FA6D8507B554856FC9CA6079CC402DF11A8B79344871669F0251535255325"
+    }
+  }
 }
 
-variable "iso_checksum" {
-  type    = string
-  default = "sha256:3E4FA6D8507B554856FC9CA6079CC402DF11A8B79344871669F0251535255325"
+variable "virtio_drivers_iso" {
+  type = object({
+    file     = string
+    checksum = string
+  })
+
+  default = {
+    file     = "virtio-win-0.1.285-1.iso"
+    checksum = "sha256:E14CF2B94492C3E925F0070BA7FDFEDEB2048C91EEA9C5A5AFB30232A3976331"
+  }
 }
 
 variable "edition_build_map" {
   type = map(object({
+    iso          = string
     image_index  = number
     product_key  = string
     vm_id        = string
@@ -19,23 +36,27 @@ variable "edition_build_map" {
 
   default = {
     Standard-Core = {
+      iso          = "Server"
       image_index  = 1
-      product_key  = "N69G4-B89J2-4G8F4-WWYCC-J464C" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "VDYBN-27WPP-V4HQT-9VMD4-VMK7H" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1221"
     }
     Standard = {
+      iso          = "Server"
       image_index  = 2
-      product_key  = "N69G4-B89J2-4G8F4-WWYCC-J464C" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "VDYBN-27WPP-V4HQT-9VMD4-VMK7H" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1222"
     }
     Datacenter-Core = {
+      iso          = "Server"
       image_index  = 3
-      product_key  = "WMDGN-G9PQG-XVVXX-R3X43-63DFG" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "WX4NM-KYWYW-QJJR4-XV3QB-6VM33" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1223"
     }
     Datacenter = {
+      iso          = "Server"
       image_index  = 4
-      product_key  = "WMDGN-G9PQG-XVVXX-R3X43-63DFG" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
+      product_key  = "WX4NM-KYWYW-QJJR4-XV3QB-6VM33" # https://learn.microsoft.com/en-us/windows-server/get-started/kms-client-activation-keys?tabs=windows1110ltsc%2Cwindows81%2Cserver2025%2Cversion1803
       vm_id        = "1224"
     }
   }
