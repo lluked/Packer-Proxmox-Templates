@@ -1,0 +1,111 @@
+
+# Perform the kickstart install in text mode
+text
+
+#####################
+###     Common     ##
+#####################
+
+###
+## Localization ##
+#
+
+# Set system keyboard type or layout
+keyboard --vckeymap=gb --xlayouts='gb'
+
+# Set language to use during installation and the default language to use on the installed system
+lang en_GB.UTF-8
+
+# Set the system time zone
+timezone Europe/London --utc
+
+###
+## Software ##
+#
+
+# Installation Source
+url --url="http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os"
+
+###
+## System ##
+#
+
+# Initialize the first drive
+# --all             erases all partitions from the system.
+# --initlabel       initializes a disk (or disks) by creating a default disk label for all disks in their respective architecture that have been designated for formatting
+clearpart --all --initlabel
+
+# Create partitions automatically
+autopart
+
+# Configure network information for target system and activate network devices in the installer environment
+# --device	        device to be activated and or configured with the network command
+# --onboot          enable device at a boot time.
+# --bootproto       method to obtain networking configuration for device (default dhcp).
+# --activate        activate this device in the installation environment.
+# --noipv6	        disable IPv6 on this device.
+# --hostname        host name for the installed system.
+network --onboot yes --bootproto dhcp --activate --noipv6 --hostname=${ hostname }
+
+# Configure firewall settings for the system
+# --enabled         reject incoming connections that are not in response to outbound requests.
+# --ssh		        allow sshd service through the firewall.
+# --disabled        do not configure any iptables rules.
+firewall --enabled --ssh
+
+# State of SELinux on the installed system
+# --disabled     disables SELinux completely on the system.
+#selinux --disabled
+
+# Do not configure the X Window System
+skipx
+
+###
+## User Settings #
+#
+
+# Root password
+rootpw ${ root_password }
+
+# Add the build user
+user --groups=wheel --name=${ user } --password=${ password } --gecos="${ user }"
+
+###
+## Installation
+#
+
+# Reboot after the installation is complete
+# --eject	    attempt to eject CD or DVD media before rebooting
+reboot --eject
+
+# # Accept EULA without user interaction
+eula --agreed
+
+#####################
+###    Packages    ##
+#####################
+
+%packages --ignoremissing 
+@^minimal-environment
+@development
+python3
+python3-pip
+bind-utils
+traceroute
+%end
+
+#####################
+###      Post      ##
+#####################
+
+%post
+# Update
+dnf update -y
+# Enable EPEL
+dnf install -y epel-release
+# Install Ansible
+dnf install -y ansible
+# Set the build user as a sudoer
+echo "${ user }        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/${ user }
+chmod 440 /target/etc/sudoers.d/${ user }
+%end
