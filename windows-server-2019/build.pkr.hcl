@@ -21,7 +21,7 @@ source "proxmox-iso" "windows-server-2019" {
   node                     = var.proxmox_node
   username                 = var.proxmox_username
   token                    = var.proxmox_token
-  insecure_skip_tls_verify = true
+  insecure_skip_tls_verify = var.proxmox_skip_tls_verify
 
   # Proxmox
   vm_name              = local.vm_name

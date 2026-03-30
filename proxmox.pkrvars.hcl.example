@@ -2,6 +2,6 @@ proxmox_url = "https://(fqdn|ip):8006/api2/json"
 proxmox_node = "node_name"
 proxmox_username = "root@pam!token_name"
 proxmox_token = "token_value"
-proxmox_verify_ssl = false
+proxmox_skip_tls_verify = true
 proxmox_iso_storage_pool = "local"
 proxmox_vm_storage_pool = "local"
