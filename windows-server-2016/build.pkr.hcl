@@ -27,7 +27,7 @@ source "proxmox-iso" "windows-server-2016" {
   vm_name              = local.vm_name
   vm_id                = var.edition_build_map[var.build_edition].vm_id
   template_name        = local.vm_name
-  tags                 = "Windows;Windows-Server-2016;Windows-Server-2016-${var.build_edition}"
+  tags                 = "Windows;Windows-Server;Windows-Server-2016;Windows-Server-2016-${var.build_edition}"
   template_description = "Windows Server 2016 ${var.build_edition}, Built ${timestamp()}"
 
   # Host
