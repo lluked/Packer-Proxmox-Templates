@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+    <settings pass="windowsPE">
+        <component name="Microsoft-Windows-PnpCustomizationsWinPE" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" processorArchitecture="amd64" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+            <!--
+                Load VirtIO drivers for install
+            -->
+            <DriverPaths>
+                <!-- VirtIO SCSI Storage Driver (scsi) -->
+                <PathAndCredentials wcm:action="add" wcm:keyValue="1">
+                    <Path>F:\vioscsi\${ driver_folder }\amd64</Path>
+                </PathAndCredentials>
+                <!-- VirtIO Block Storage Driver (virtio) -->
+                <PathAndCredentials wcm:action="add" wcm:keyValue="2">
+                    <Path>F:\viostor\${ driver_folder }\amd64</Path>
+                </PathAndCredentials>
+                <!-- VirtIO Network Driver - paravirtualized networking -->
+                <PathAndCredentials wcm:action="add" wcm:keyValue="3">
+                    <Path>F:\NetKVM\${ driver_folder }\amd64</Path>
+                </PathAndCredentials>
+                <!-- VirtIO GPU Driver - paravirtualized graphics -->
+                <PathAndCredentials wcm:action="add" wcm:keyValue="4">
+                    <Path>F:\viogpu\${ driver_folder }\amd64</Path>
+                </PathAndCredentials>
+                <!-- VirtIO Serial Driver - paravirtualized serial communication -->
+                <PathAndCredentials wcm:action="add" wcm:keyValue="6">
+                    <Path>F:\vioserial\${ driver_folder }\amd64</Path>
+                </PathAndCredentials>
+                <!-- Virtual RNG Driver - improves entropy for crypto/security -->
+                <PathAndCredentials wcm:action="add" wcm:keyValue="7">
+                    <Path>F:\viorng\${ driver_folder }\amd64</Path>
+                </PathAndCredentials>
+            </DriverPaths>
+        </component>
+        <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SetupUILanguage>
+                <UILanguage>${ build_locale }</UILanguage>
+            </SetupUILanguage>
+            <InputLocale>${ build_locale }</InputLocale>
+            <SystemLocale>${ build_locale }</SystemLocale>
+            <UILanguage>${ lower(build_locale) == "en-gb" ? "en-US" : build_locale }</UILanguage>
+            <UserLocale>${ build_locale }</UserLocale>
+        </component>
+        <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DiskConfiguration>
+                <Disk wcm:action="add">
+                    <DiskID>0</DiskID>
+                    <WillWipeDisk>true</WillWipeDisk>
+                    <!-- Create partitions -->
+                    <CreatePartitions>
+                        <!-- System Reserved -->
+                        <CreatePartition wcm:action="add">
+                            <Order>1</Order>
+                            <Type>Primary</Type>
+                            <Size>500</Size>
+                        </CreatePartition>
+                        <!-- OS Partition -->
+                        <CreatePartition wcm:action="add">
+                            <Order>2</Order>
+                            <Type>Primary</Type>
+                            <Extend>true</Extend>
+                        </CreatePartition>
+                    </CreatePartitions>
+                    <!-- Format partitions -->
+                    <ModifyPartitions>
+                        <!-- System Reserved -->
+                        <ModifyPartition wcm:action="add">
+                            <Order>1</Order>
+                            <PartitionID>1</PartitionID>
+                            <Format>NTFS</Format>
+                            <Label>System Reserved</Label>
+                            <Active>true</Active>
+                        </ModifyPartition>
+                        <!-- Windows (C:) -->
+                        <ModifyPartition wcm:action="add">
+                            <Order>2</Order>
+                            <PartitionID>2</PartitionID>
+                            <Format>NTFS</Format>
+                            <Letter>C</Letter>
+                        </ModifyPartition>
+                    </ModifyPartitions>
+                </Disk>
+            </DiskConfiguration>
+            <UserData>
+                <AcceptEula>true</AcceptEula>
+                <Organization>${ organization }</Organization>
+                <ProductKey>
+                    %{~ if product_key != "" ~}
+                    <Key>${ product_key }</Key>
+                    %{~ endif ~}
+                    <WillShowUI>Never</WillShowUI>
+                </ProductKey>
+            </UserData>
+            <ImageInstall>
+                <OSImage>
+                    <InstallTo>
+                        <DiskID>0</DiskID>
+                        <PartitionID>2</PartitionID>
+                    </InstallTo>
+                    <WillShowUI>OnError</WillShowUI>
+                    <InstallToAvailablePartition>false</InstallToAvailablePartition>
+                    <InstallFrom>
+                        <MetaData wcm:action="add">
+                            <Key>/IMAGE/INDEX</Key>
+                            <Value>${ image_index }</Value>
+                        </MetaData>
+                    </InstallFrom>
+                </OSImage>
+            </ImageInstall>
+        </component>
+    </settings>
+    <settings pass="specialize">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ComputerName>${ computer_name }</ComputerName>
+            <TimeZone>${ timezone }</TimeZone>
+        </component>
+        <component name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SkipAutoActivation>true</SkipAutoActivation>
+        </component>
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>${ build_locale }</InputLocale>
+            <SystemLocale>${ build_locale }</SystemLocale>
+            <UILanguage>${ lower(build_locale) == "en-gb" ? "en-US" : build_locale }</UILanguage>
+            <UserLocale>${ build_locale }</UserLocale>
+        </component>
+    </settings>
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <AutoLogon>
+                <Enabled>true</Enabled>
+                <Username>${ user }</Username>
+                <Password>
+                    <Value>${ password }</Value>
+                    <PlainText>true</PlainText>
+                </Password>
+            </AutoLogon>
+            <FirstLogonCommands>
+            %{ for index, synchronous_command in first_logon_commands ~}
+                <SynchronousCommand wcm:action="add">
+                    <Order>${index + 1}</Order>
+                    %{ if synchronous_command.description != "" }
+                    <Description>${synchronous_command.description}</Description>
+                    %{ endif }
+                    <CommandLine>${synchronous_command.command_line}</CommandLine>
+                </SynchronousCommand>
+            %{ endfor ~}
+            </FirstLogonCommands>
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+                <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+                <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+                <ProtectYourPC>${ protect_your_pc }</ProtectYourPC>
+            </OOBE>
+            <UserAccounts>
+                <AdministratorPassword>
+                    <Value>${ admin_password }</Value>
+                    <PlainText>true</PlainText>
+                </AdministratorPassword>
+                <LocalAccounts>
+                    <LocalAccount wcm:action="add">
+                        <Password>
+                            <Value>${ password }</Value>
+                            <PlainText>true</PlainText>
+                        </Password>
+                        <Description>Build User</Description>
+                        <DisplayName>${ upper(substr(user, 0, 1))}${lower(substr(user, 1, length(user))) }</DisplayName>
+                        <Group>Administrators</Group>
+                        <Name>${ user }</Name>
+                    </LocalAccount>
+                </LocalAccounts>
+            </UserAccounts>
+        </component>
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>${ build_locale }</InputLocale>
+            <SystemLocale>${ build_locale }</SystemLocale>
+            <UILanguage>${ lower(build_locale) == "en-gb" ? "en-US" : build_locale }</UILanguage>
+            <UserLocale>${ build_locale }</UserLocale>
+        </component>
+    </settings>
+</unattend>
